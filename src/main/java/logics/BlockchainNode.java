@@ -1,6 +1,8 @@
 package logics;
 
 
+import util.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -9,22 +11,28 @@ import java.util.Random;
 public class BlockchainNode extends BlockChain {
 
 
+    public static String GENESIS_BLOCK_DATA = Utils.getPropertyByName("genesisBlock");
+    public static String BLOCK_CHAIN_NODE_DATA = Utils.getPropertyByName("blocksEachNode");
+    public static String VALID_FLAG = Utils.getPropertyByName("validFlag");
+    public static String NODE_COUNT = Utils.getPropertyByName("nodeCount");
+
+
     public BlockchainNode(int index, String prevHash, String data) {
         super(index, prevHash, data);
     }
 
 
     public boolean isValid() {
-        return hash.endsWith("0000");
+        return hash.endsWith(VALID_FLAG);
     }
 
     public static void main(String[] args) {
-        int nodeQuantity = 3;
+        int nodeQuantity = Integer.parseInt(NODE_COUNT);
         List<BlockchainNode> blockchain = new ArrayList<>();
-        BlockchainNode genesis = new BlockchainNode(0, "", "genesis");
+        BlockchainNode genesis = new BlockchainNode(0, "", GENESIS_BLOCK_DATA);
         blockchain.add(genesis);
         for (int i = 1; i < nodeQuantity; i++) {
-            BlockchainNode node = new BlockchainNode(i, genesis.getHash(), "node" + i);
+            BlockchainNode node = new BlockchainNode(i, genesis.getHash(), BLOCK_CHAIN_NODE_DATA + i);
             blockchain.add(node);
         }
         while (true) {

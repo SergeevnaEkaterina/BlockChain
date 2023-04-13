@@ -1,12 +1,16 @@
 package logics;
 
 import model.Block;
+import util.Utils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class BlockChain extends Block {
+
+    public static String ALGORITHM = Utils.getPropertyByName("cryptAlgorithm");
+
 
 
     public BlockChain(int index, String prevHash, String data) {
@@ -33,21 +37,12 @@ public class BlockChain extends Block {
         MessageDigest digest = null;
         byte[] bytes = null;
         try {
-            digest = MessageDigest.getInstance("SHA-256");
+            digest = MessageDigest.getInstance(ALGORITHM);
             bytes = digest.digest(dataToHash.getBytes(StandardCharsets.UTF_8));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return bytes != null ? bytesToHex(bytes) : "";
-    }
-
-
-    public static String bytesToHex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
+        return bytes != null ? Utils.bytesToHex(bytes) : "";
     }
 
 }
