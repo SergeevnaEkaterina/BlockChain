@@ -70,6 +70,8 @@ public class BlockchainNode extends BlockChain {
                 nonce++;
             }
             System.out.println("Node " + index + " found: " + node.getHash());
+            System.out.println("Node " + index + " data: " + node.getData());
+            System.out.println("Node " + index + " nonce: " + node.getNonce());
             updateBlockChainWithNewBlock(blockchain, node, index);
         }
     }
