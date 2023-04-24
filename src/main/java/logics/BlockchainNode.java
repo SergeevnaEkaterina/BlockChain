@@ -27,24 +27,20 @@ public class BlockchainNode extends BlockChain {
     }
 
     public static void main(String[] args) {
-        int nodeQuantity = Integer.parseInt(NODE_COUNT);
         List<BlockchainNode> blockchain = new ArrayList<>();
         BlockchainNode genesis = new BlockchainNode(0, "", GENESIS_BLOCK_DATA);
+        calculateNonce(genesis, 0, blockchain);
         blockchain.add(genesis);
-        for (int i = 1; i < nodeQuantity; i++) {
-            BlockchainNode node = new BlockchainNode(i, genesis.getHash(), BLOCK_CHAIN_NODE_DATA + i);
+        for (int i = 1; ; i++) {
+            BlockchainNode node = null;
+            if (i == 1) {
+                node = new BlockchainNode(i, genesis.getHash(), BLOCK_CHAIN_NODE_DATA + i);
+            } else {
+                node = new BlockchainNode(i, blockchain.get(i - 1).getHash(), BLOCK_CHAIN_NODE_DATA + i);
+            }
+            calculateNonce(node, i, blockchain);
             blockchain.add(node);
-        }
-        while (true) {
-            for (int i = 0; i < blockchain.size(); i++) {
-                BlockchainNode node = blockchain.get(i);
-                calculateNonce(node, i, blockchain);
-            }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 
